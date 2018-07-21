@@ -22,15 +22,16 @@
         <section class="main">
             <input type="checkbox" class="toggle-all">
             <ul class="todo-list">
-                <li class="todo ">
+                <li class="todo " v-for='(v,i) in todoList' :class='{completed:v.complete}'>
                     <div class="view">
-                        <input type="checkbox" class="toggle">
-                        <label>21</label>
+                        <input type="checkbox" class="toggle" v-model='v.complete' >
+                        <label>{{v.name}}</label>
                         <button class="destroy"></button>
                     </div>
                     <input type="text" class="edit">
                 </li>
-                <li class="todo completed">
+                <!-- 模板列表 -->
+                <!-- <li class="todo completed">
                     <div class="view">
                         <input type="checkbox" class="toggle">
                         <label>21</label>
@@ -45,7 +46,7 @@
                             <button class="destroy"></button>
                         </div>
                         <input type="text" class="edit">
-                    </li>
+                    </li> -->
             </ul>
         </section>
         <footer class="footer">
@@ -77,18 +78,24 @@
             <a href="http://todomvc.com">TodoMVC</a>
         </p>
     </footer>
-
-    <script>
-        // tell the embed parent frame the height of the content
-        if (window.parent && window.parent.parent) {
-            window.parent.parent.postMessage(["resultsFrame", {
-                height: document.body.getBoundingClientRect().height,
-                slug: "4dr2fLb7"
-            }], "*")
-        }
-    </script>
-
-
 </body>
-
 </html>
+<script>
+    let app= new Vue({
+        el:'.todoapp',
+        data:{
+            todoList:[
+                {name:"待办事项1",complete:false,isEdit: false},
+                {name:"待办事项2",complete:false,isEdit: false},
+                {name:"待办事项3",complete:true,isEdit: false},
+            ],
+        },
+        methods:{
+
+        },
+        computed:{
+
+        }
+    })
+
+</script>
