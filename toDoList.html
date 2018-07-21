@@ -22,7 +22,7 @@
         <section class="main">
             <input type="checkbox" class="toggle-all">
             <ul class="todo-list">
-                <li class="todo " v-for='(v,i) in todoList' :class='{completed:v.complete,editing:v.isEdit}'>
+                <li class="todo " v-for='(v,i) in visiableList' :class='{completed:v.complete,editing:v.isEdit}'>
                     <div class="view">
                         <input type="checkbox" class="toggle" v-model='v.complete' >
                         <label @dblclick='editTodo(i)'>{{v.name}}</label>
@@ -55,13 +55,13 @@
             </span>
             <ul class="filters">
                 <li>
-                    <a href="#/all" class="selected">全部</a>
+                    <a href="#/all" :class="{selected:visibility=='全部'}" @click="changevisiable('全部')">全部</a>
                 </li>
                 <li>
-                    <a href="#/active" class="selected">未完成</a>
+                    <a href="#/active" :class="{selected:visibility=='未完成'}" @click="changevisiable('未完成')">未完成</a>
                 </li>
                 <li>
-                    <a href="#/completed" class="selected">完成</a>
+                    <a href="#/completed" :class="{selected:visibility=='完成'}" @click="changevisiable('完成')">完成</a>
                 </li>
             </ul>
             <button class="clear-completed" @click='clearAll'>
@@ -91,7 +91,8 @@
             ],
             inputValue:'',
             //需要修改的内容,双向绑定,以便赋值取值
-            cacheEdit:''
+            cacheEdit:'',
+            visibility:'全部'
         },
         methods:{
             addvalue(){
@@ -124,6 +125,9 @@
             },
             clearAll(){
                 this.todoList=[];
+            },
+            changevisiable(res){
+                this.visibility=res;
             }
         },
         computed:{
@@ -134,6 +138,19 @@
                     }
                 }).length;
             },
+            visiableList() {
+                return this.todoList.filter((v,i)=>{
+                    switch (this.visibility) {
+                        case '全部':return v;
+                            break;
+                        case '未完成':
+                            if (v.complete == false) {return v;}
+                            break;
+                        case '完成':if (v.complete) {return v;}
+                            break;
+                    }
+                })
+            }
         }
     })
 
