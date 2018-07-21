@@ -20,11 +20,11 @@
             <input autofocus="autofocus" autocomplete="off" placeholder="想干啥?" class="new-todo"  v-model='inputValue' @keyup.enter='addvalue()'>
         </header>
         <section class="main">
-            <input type="checkbox" class="toggle-all">
+            <input type="checkbox" class="toggle-all" v-model='checkAll' @change='checkedAll'>
             <ul class="todo-list">
                 <li class="todo " v-for='(v,i) in visiableList' :class='{completed:v.complete,editing:v.isEdit}'>
                     <div class="view">
-                        <input type="checkbox" class="toggle" v-model='v.complete' >
+                        <input type="checkbox" class="toggle" v-model='v.complete' @change='checkIscheckAll'>
                         <label @dblclick='editTodo(i)'>{{v.name}}</label>
                         <button class="destroy" @click='removeTodo'></button>
                     </div>
@@ -92,7 +92,8 @@
             inputValue:'',
             //需要修改的内容,双向绑定,以便赋值取值
             cacheEdit:'',
-            visibility:'全部'
+            visibility:'全部',
+            checkAll:false
         },
         methods:{
             addvalue(){
@@ -128,6 +129,16 @@
             },
             changevisiable(res){
                 this.visibility=res;
+            },
+            checkedAll(){
+               for(let i=0;i<this.todoList.length;i++){
+                   this.todoList[i].complete=this.checkAll;
+               }
+            },
+            checkIscheckAll(){
+                let totalCount=this.todoList.length;
+                let checkedCount=this.todoList.filter((v,i)=>{if(this.todoList[i].complete){return v}}).length;
+                this.checkAll=totalCount==checkedCount;
             }
         },
         computed:{
