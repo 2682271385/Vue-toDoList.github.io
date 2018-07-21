@@ -28,7 +28,7 @@
                         <label @dblclick='editTodo(i)'>{{v.name}}</label>
                         <button class="destroy" @click='removeTodo'></button>
                     </div>
-                    <input type="text" class="edit" v-model='cacheEdit'>
+                    <input type="text" class="edit" v-model='cacheEdit' @keyup.enter='saveEdit(i)' @keyup.esc='cancelEdit(i)' @blur='cancelEdit(i)'>
                 </li>
                 <!-- 模板列表 -->
                 <!-- <li class="todo completed">
@@ -115,6 +115,13 @@
                 this.todoList[i].isEdit = !this.todoList[i].isEdit;
                 this.cacheEdit = this.todoList[i].name;
             },
+            saveEdit(i){
+                this.todoList[i].name=this.cacheEdit;
+                this.todoList[i].isEdit=false;
+            },
+            cancelEdit(i){
+                this.todoList[i].isEdit=false;
+            }
         },
         computed:{
 
