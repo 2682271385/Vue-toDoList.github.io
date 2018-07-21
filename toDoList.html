@@ -26,7 +26,7 @@
                     <div class="view">
                         <input type="checkbox" class="toggle" v-model='v.complete' >
                         <label>{{v.name}}</label>
-                        <button class="destroy"></button>
+                        <button class="destroy" @click='removetodo'></button>
                     </div>
                     <input type="text" class="edit">
                 </li>
@@ -103,6 +103,9 @@
                     })
                 }
                 this.inputValue=''
+            },
+            removetodo(i){
+                this.todoList.splice(i,1);
             },
         },
         computed:{
