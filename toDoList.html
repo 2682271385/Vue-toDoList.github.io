@@ -17,7 +17,7 @@
     <section class="todoapp">
         <header class="header">
             <h1>Todo</h1>
-            <input autofocus="autofocus" autocomplete="off" placeholder="想干啥?" class="new-todo">
+            <input autofocus="autofocus" autocomplete="off" placeholder="想干啥?" class="new-todo"  v-model='inputValue' @keyup.enter='addvalue()'>
         </header>
         <section class="main">
             <input type="checkbox" class="toggle-all">
@@ -89,9 +89,21 @@
                 {name:"待办事项2",complete:false,isEdit: false},
                 {name:"待办事项3",complete:true,isEdit: false},
             ],
+            inputValue:'',
         },
         methods:{
-
+            addvalue(){
+                //添加内容不能为空,去空格做判断
+                this.inputValue=this.inputValue.trim();
+                    if(this.inputValue!=''){
+                        this.todoList.push({
+                        name:this.inputValue,
+                        complete:false,
+                        isEdit:false
+                    })
+                }
+                this.inputValue=''
+            },
         },
         computed:{
 
