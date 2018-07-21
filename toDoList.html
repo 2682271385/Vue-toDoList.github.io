@@ -51,7 +51,7 @@
         </section>
         <footer class="footer">
             <span class="todo-count">
-                <strong>1</strong> 项 剩余
+                <strong>{{noDone}}</strong> 项 剩余
             </span>
             <ul class="filters">
                 <li>
@@ -64,7 +64,7 @@
                     <a href="#/completed" class="selected">完成</a>
                 </li>
             </ul>
-            <button class="clear-completed">
+            <button class="clear-completed" @click='clearAll'>
                 清空列表
             </button>
         </footer>
@@ -121,10 +121,19 @@
             },
             cancelEdit(i){
                 this.todoList[i].isEdit=false;
+            },
+            clearAll(){
+                this.todoList=[];
             }
         },
         computed:{
-
+            noDone(){
+                return this.todoList.filter((v, i) => {
+                    if (v.complete == false) {
+                        return v;
+                    }
+                }).length;
+            },
         }
     })
 
