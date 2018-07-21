@@ -81,19 +81,37 @@
 </body>
 </html>
 <script>
+    let todoList = JSON.parse(window.localStorage.getItem('todoList'));
+    if (todoList) {
+    } else {
+        todoList = [
+            {
+                name: '待办事项1',
+                complete: true,
+                isEdit: false
+            },
+            {
+                name: '待办事项2',
+                complete: false,
+                isEdit: false
+            },
+            {
+                name: '待办事项3',
+                complete: true,
+                isEdit: false
+            },
+
+        ]
+    }
     let app= new Vue({
         el:'.todoapp',
         data:{
-            todoList:[
-                {name:"待办事项1",complete:false,isEdit: false},
-                {name:"待办事项2",complete:false,isEdit: false},
-                {name:"待办事项3",complete:true,isEdit: false},
-            ],
             inputValue:'',
             //需要修改的内容,双向绑定,以便赋值取值
             cacheEdit:'',
             visibility:'全部',
-            checkAll:false
+            checkAll:false,
+            todoList
         },
         methods:{
             addvalue(){
@@ -164,5 +182,8 @@
             }
         }
     })
+    window.onbeforeunload = function () {
+        window.localStorage.setItem('todoList',JSON.stringify(todoList));
+    }
 
 </script>
