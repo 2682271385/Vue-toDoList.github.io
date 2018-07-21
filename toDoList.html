@@ -22,13 +22,13 @@
         <section class="main">
             <input type="checkbox" class="toggle-all">
             <ul class="todo-list">
-                <li class="todo " v-for='(v,i) in todoList' :class='{completed:v.complete}'>
+                <li class="todo " v-for='(v,i) in todoList' :class='{completed:v.complete,editing:v.isEdit}'>
                     <div class="view">
                         <input type="checkbox" class="toggle" v-model='v.complete' >
-                        <label>{{v.name}}</label>
-                        <button class="destroy" @click='removetodo'></button>
+                        <label @dblclick='editTodo(i)'>{{v.name}}</label>
+                        <button class="destroy" @click='removeTodo'></button>
                     </div>
-                    <input type="text" class="edit">
+                    <input type="text" class="edit" v-model='cacheEdit'>
                 </li>
                 <!-- 模板列表 -->
                 <!-- <li class="todo completed">
@@ -90,10 +90,11 @@
                 {name:"待办事项3",complete:true,isEdit: false},
             ],
             inputValue:'',
+            //需要修改的内容,双向绑定,以便赋值取值
+            cacheEdit:''
         },
         methods:{
             addvalue(){
-                //添加内容不能为空,去空格做判断
                 this.inputValue=this.inputValue.trim();
                     if(this.inputValue!=''){
                         this.todoList.push({
@@ -104,8 +105,15 @@
                 }
                 this.inputValue=''
             },
-            removetodo(i){
+            removeTodo(i){
                 this.todoList.splice(i,1);
+            },
+            editTodo(i){
+                for (let i = 0; i < this.todoList.length; i++) {
+                    this.todoList[i].isEdit = false;
+                }
+                this.todoList[i].isEdit = !this.todoList[i].isEdit;
+                this.cacheEdit = this.todoList[i].name;
             },
         },
         computed:{
